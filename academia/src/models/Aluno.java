@@ -25,10 +25,10 @@ public class Aluno extends Pessoa implements GeradorDeRelatorio{
     public void setStatusPlano(boolean statusPlano) {
         this.statusPlano = statusPlano;
     }
-    public Aluno(String cpf, String nome, int idade, String matricula, String plano){
+    public Aluno(String cpf, String nome, int idade, String matricula){
         super(cpf, nome, idade);
         this.matricula = matricula;
-        this.plano = plano;
+        this.plano = "";
         this.statusPlano = false;
     }
     //caso de aluno que esta fazendo diaria
@@ -36,7 +36,7 @@ public class Aluno extends Pessoa implements GeradorDeRelatorio{
         super("N/A", nome, 0);
         this.matricula = matricula;
         this.plano = "diaria";
-        this.statusPlano = false; //false ate ser confirmado pagamento
+        this.statusPlano = false;
     }
     @Override
     public void gerarRelatorio(){

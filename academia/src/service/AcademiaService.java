@@ -56,24 +56,9 @@ public class AcademiaService {
                     System.out.print("Matricula do Aluno: ");
                     String matricula = leitor.nextLine();
 
-                    System.out.println("Escolha o plano:");
-                    System.out.println("1. Mensal");
-                    System.out.println("2. Semestral");
-                    System.out.println("3. Anual");
-                    int opcaoPlano = leitor.nextInt();
-                    leitor.nextLine();
-
-                    String novoPlano = "";
-                    switch (opcaoPlano) {
-                        case 1: novoPlano = "Mensal"; break;
-                        case 2: novoPlano = "Semestral"; break;
-                        case 3: novoPlano = "Anual"; break;
-                        default: System.out.println("Opcao invalida"); break;
-                    }
-
-                    Aluno novoAluno = new Aluno(cpf, nome, idadeAluno, matricula, novoPlano);
+                    Aluno novoAluno = new Aluno(cpf, nome, idadeAluno, matricula);
                     alunos.add(novoAluno);
-                    System.out.println("Aluno cadastrado com sucesso!");
+                    System.out.println("Aluno cadastrado com sucesso! Use 'Ativar Plano' para definir o plano.");
                     break;
 
                 case 2:
@@ -270,7 +255,6 @@ public class AcademiaService {
                             break;
                         }
                         recepcionista.verificarAcesso(alunoAcesso);
-                        System.out.println("Acesso liberado!");
                     } catch (AcessoNegadoException e) {
                         System.out.println(e.getMessage());
                     }

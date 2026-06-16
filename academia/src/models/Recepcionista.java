@@ -24,13 +24,6 @@ public class Recepcionista extends Pessoa{
         System.out.println("Plano ativado!");
         aluno.setStatusPlano(true);
     }
-    public void verificarPagamento(Aluno aluno){
-        if(aluno.isStatusPlano()){
-            System.out.println("Pagamento confirmado");
-        }else{
-            System.out.println("Pagamento pendente");
-        }
-    }
 
     @Override
     public void exibirDados() {
@@ -41,9 +34,10 @@ public class Recepcionista extends Pessoa{
 
     public void verificarAcesso(Aluno aluno) throws AcessoNegadoException{
         if(!aluno.isStatusPlano()){
-            throw new AcessoNegadoException("Acesso negado");
+            throw new AcessoNegadoException("Acesso negado: O aluno não possui um plano ativo.");
         }else{
             System.out.println("Acesso permitido");
+        System.out.println("Plano: " + aluno.getPlano());
         }
     }
   

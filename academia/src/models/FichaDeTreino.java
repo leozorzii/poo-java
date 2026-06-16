@@ -15,6 +15,10 @@ public FichaDeTreino(Aluno aluno, Personal personal, String dataCriacao, String 
     this.exercicios = new ArrayList<String>();
     this.dataCriacao = dataCriacao;
     this.objetivo = objetivo;
+    //sincroniza o relacionamento ao criar a ficha de treino
+    if(!personal.getAlunos().contains(aluno)){
+        personal.adicionarAluno(aluno);
+    }
 }
 public Aluno getAluno() {
     return aluno;
