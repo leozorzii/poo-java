@@ -1,47 +1,393 @@
-# 🏋️‍♂️ Sistema de Gerenciamento de Academia (Gym Management System)
+# 🏋️‍♂️ Sistema de Gerenciamento de Academia
 
-[cite_start]Este é um projeto acadêmico desenvolvido em **Java** para consolidar e aplicar na prática os pilares fundamentais da **Programação Orientada a Objetos (POO)**[cite: 12]. [cite_start]O sistema simula o fluxo operacional real de uma academia[cite: 13, 14], contemplando o cadastro de alunos e personais, criação de fichas de treino, ativação/cancelamento de planos e validação crítica de acesso (controle de catraca).
+Projeto acadêmico desenvolvido em **Java** com o objetivo de consolidar e aplicar os principais conceitos da **Programação Orientada a Objetos (POO)**.
+
+O sistema simula o funcionamento operacional de uma academia, contemplando o cadastro de alunos e profissionais, gerenciamento de planos, criação de fichas de treino e controle de acesso por meio de regras de negócio e tratamento de exceções.
+---
+
+# Objetivo
+
+Desenvolver uma aplicação orientada a objetos capaz de representar processos reais de uma academia, aplicando conceitos fundamentais da engenharia de software como:
+
+* Abstração
+* Herança
+* Encapsulamento
+* Polimorfismo
+* Interfaces
+* Sobrecarga e Sobrescrita
+* Tratamento de Exceções
+* Organização em Camadas
 
 ---
 
-## 🎯 Motivação do Tema
+# Motivação do Projeto
 
-[cite_start]A escolha do tema **Gestão de Academia** baseia-se em três fatores estratégicos de engenharia de software[cite: 14]:
-1. [cite_start]**Abstração Concreta de Processos Reais:** Mapeia um fluxo operacional cotidiano e dinâmico (*Inscrição ➔ Matrícula ➔ Prescrição de Treino ➔ Validação na Portaria*) diretamente para o paradigma de objetos[cite: 13].
-2. **Complexidade Semântica Ideal:** Exige relacionamentos naturais e consistentes entre entidades (um `Aluno` possui uma `FichaDeTreino` que é prescrita por um `Personal` e validada por uma `Recepcionista`).
-3. [cite_start]**Aplicação Rígida dos Pilares de POO:** O ecossistema fornece o cenário perfeito para demonstrar regras de negócio usando Herança estrutural, Polimorfismo de inclusão, Contratos de comportamento (Interfaces) e blindagem de estados via Encapsulamento[cite: 13, 17].
+A escolha do tema **Gestão de Academia** foi baseada em três fatores principais:
 
----
+### 1. Abstração de Processos Reais
 
-## 📁 Estrutura de Pastas e Arquitetura
-
-[cite_start]O projeto foi organizado em pacotes lógicos bem definidos para garantir a **alta coesão**, **baixo acoplamento** e a clara separação de responsabilidades[cite: 51]:
+O sistema representa um fluxo comum encontrado em academias:
 
 ```text
-PROJETO_ACADEMIA/src/
+Inscrição
+   ↓
+Matrícula
+   ↓
+Ativação do Plano
+   ↓
+Criação da Ficha de Treino
+   ↓
+Controle de Acesso
+```
+
+### 2. Relacionamentos Naturais
+
+O domínio permite modelar relacionamentos reais entre objetos:
+
+* Um Aluno possui uma Ficha de Treino.
+* Um Personal prescreve treinos.
+* Uma Recepcionista controla acessos e planos.
+* A Ficha conecta Aluno e Personal.
+
+### 3. Aplicação dos Conceitos de POO
+
+O cenário foi ideal para demonstrar:
+
+* Herança
+* Encapsulamento
+* Polimorfismo
+* Interfaces
+* Exceções personalizadas
+
+---
+
+# Arquitetura do Sistema
+
+O projeto segue uma estrutura organizada em pacotes, buscando:
+
+* Alta coesão
+* Baixo acoplamento
+* Separação de responsabilidades
+* Facilidade de manutenção
+
+---
+
+# 📁 Estrutura de Pastas
+
+```text
+PROJETO_ACADEMIA/
+│
+├── src/
 │
 ├── app/
-│   └── Main.java                      # Ponto de entrada (Inicialização do Sistema)
+│   └── Main.java
 │
 ├── exception/
-│   └── AcessoNegadoException.java     # Exceção customizada para regras de negócio
+│   └── AcessoNegadoException.java
 │
 ├── interfaces/
-│   └── GeradorDeRelatorio.java        # Contrato polimórfico para relatórios
+│   └── GeradorDeRelatorio.java
 │
 ├── models/
-│   ├── Pessoa.java                    # Superclasse Abstrata (Abstração & Herança)
-│   ├── Aluno.java                     # Subclasse (Sobrecarga de construtores)
-│   ├── Personal.java                  # Subclasse (Encapsulamento de coleções)
-│   ├── Recepcionista.java             # Subclasse (Dona das regras operacionais)
-│   └── FichaDeTreino.java             # Associação e Consistência Referencial
+│   ├── Pessoa.java
+│   ├── Aluno.java
+│   ├── Personal.java
+│   ├── Recepcionista.java
+│   └── FichaDeTreino.java
 │
 └── service/
-    └── AcademiaService.java           # Orquestrador do Menu Interativo (Console)
-🛠️ Pilares de POO Aplicados no Projeto1. Abstração e Herança (Pessoa.java)A classe Pessoa foi definida como abstract, funcionando como a fundação estrutural do projeto (É-UM). Ela impede a instanciação genérica e centraliza os atributos comuns (id, nome, cpf, idade), além do método abstrato obrigatório exibirDados().  Geração de ID Único: A lógica de autoincremento de ID foi centralizada em um contador estático dentro do construtor de Pessoa, eliminando duplicação de código e garantindo integridade a todas as subclasses.2. Encapsulamento AvançadoTodos os atributos do sistema são estritamente private, acessados apenas por Getters e Setters quando necessário.  Proteção de Coleções: Na classe Personal, a lista ArrayList<Aluno> é encapsulada. Nenhuma classe externa pode modificá-la diretamente via .add(). A inserção é blindada através do método de negócio adicionarAluno(Aluno aluno).Consistência Referencial: No construtor de FichaDeTreino, o relacionamento bidirecional é sincronizado automaticamente, vinculando o aluno ao personal de forma transparente no momento da criação do treino.3. Sobrecarga (Overload) vs. Sobrescrita (Override)Sobrecarga (Mesma Classe): Aplicada na classe Aluno com múltiplos construtores. O primeiro inicializa o aluno completo com plano e matrícula. O segundo recebe apenas nome e matricula, ideal para cenários de diárias avulsas.  Sobrescrita (Classes Diferentes): Aplicada com a anotação @Override no método exibirDados(). Cada classe filha (Aluno, Personal, Recepcionista) reescreve o comportamento para renderizar seus dados específicos em tela.  4. Polimorfismo e InterfacesA interface GeradorDeRelatorio define um contrato de comportamento. Tanto Aluno quanto Personal implementam essa interface. Na camada de serviço, objetos são tratados de forma uniforme sob o tipo da interface (Polimorfismo de Inclusão):  JavaGeradorDeRelatorio gerador = personalRelatorio;
-gerador.gerarRelatorio(); // Executa o comportamento polimórfico específico
-🛡️ Robustez e Tratamento de ExceçõesO sistema implementa uma política rígida de falhas estruturadas, dividindo o fluxo de exceção em duas camadas bem distintas:  Lançamento (Regra de Negócio - Recepcionista): A classe Recepcionista é a fiscal do sistema. No método verificarAcesso(Aluno aluno), se o plano do aluno estiver inativo (false), ela interrompe o fluxo imediatamente disparando uma exceção customizada de negócio:  Javathrow new AcessoNegadoException("Acesso negado: Plano inativo.");
-Captura e Tratamento (Interface/Menu - AcademiaService): A camada de controle intercepta a exceção usando blocos try-catch. Isso isola o erro de negócio, exibe uma mensagem amigável ao operador no console e impede que a aplicação sofra um crash, mantendo o menu em loop operando normalmente.  💻 Funcionalidades do Menu (Console)O sistema possui uma interface CLI rica no método iniciarSessao() da AcademiaService com as seguintes opções:  Cadastrar Aluno (Suporta múltiplos tipos de matrícula via sobrecarga)Cadastrar PersonalAtivar Plano (Operação exclusiva e auditada pela Recepcionista)Cancelar PlanoCriar Ficha de Treino (Estabelece consistência referencial automática)Verificar Acesso Aluno (Portaria protegida por try-catch e AcessoNegadoException)Gerar Relatório (Polimorfismo puro via Interface)Sair🚀 Como Executar o ProjetoCertifique-se de ter o JDK 11 ou superior instalado em sua máquina.Clone este repositório:Bashgit clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/seu-usuario/nome-do-repositorio.git)
-Navegue até a pasta raiz do projeto e compile os arquivos:Bashjavac src/app/Main.java -d bin
-Execute a aplicação:Bashjava -cp bin src.app.Main
-🎓 AutorLeonardo Montagner de Zorzi (Leozorzii)Desenvolvedor Full Stack & Bacharel em Sistemas de InformaçãoUniversidade Franciscana (UFN)   
+    └── AcademiaService.java
+```
+
+---
+
+# Pilares de POO Aplicados
+
+## 1. Abstração e Herança
+
+A classe `Pessoa` foi definida como abstrata, servindo como base para todas as demais entidades do sistema.
+
+### Responsabilidades
+
+* Centralizar atributos comuns:
+
+  * id
+  * nome
+  * cpf
+  * idade
+
+* Definir o método abstrato:
+
+```java
+public abstract void exibirDados();
+```
+
+### Benefícios
+
+* Evita duplicação de código.
+* Garante padronização entre as subclasses.
+* Impede instanciação de objetos genéricos.
+
+### ID Automático
+
+O identificador é gerado automaticamente por um contador estático presente na superclasse.
+
+---
+
+## 2. Encapsulamento
+
+Todos os atributos do sistema são declarados como:
+
+```java
+private
+```
+
+O acesso é realizado exclusivamente por métodos públicos controlados.
+
+### Exemplo
+
+Na classe `Personal`, a lista de alunos fica protegida:
+
+```java
+private ArrayList<Aluno> alunos;
+```
+
+Novos alunos são adicionados apenas por:
+
+```java
+adicionarAluno(Aluno aluno);
+```
+
+Isso evita modificações indevidas por outras classes.
+
+---
+
+## 3. Consistência Referencial
+
+Ao criar uma ficha de treino, o relacionamento entre aluno e personal é estabelecido automaticamente.
+
+```java
+FichaDeTreino ficha = new FichaDeTreino(aluno, personal);
+```
+
+Garantindo sincronização dos objetos envolvidos.
+
+---
+
+## 4. Sobrecarga (Overload)
+
+A classe `Aluno` possui múltiplos construtores.
+
+### Exemplo
+
+```java
+Aluno(String nome, String matricula);
+```
+
+```java
+Aluno(String nome,
+      String cpf,
+      int idade,
+      String matricula,
+      boolean planoAtivo);
+```
+
+Permite diferentes formas de cadastro conforme a necessidade.
+
+---
+
+## 5. Sobrescrita (Override)
+
+As subclasses redefinem o comportamento do método:
+
+```java
+@Override
+public void exibirDados()
+```
+
+Cada classe apresenta suas informações específicas.
+
+Exemplos:
+
+* Aluno
+* Personal
+* Recepcionista
+
+---
+
+## 6. Polimorfismo e Interfaces
+
+A interface:
+
+```java
+GeradorDeRelatorio
+```
+
+define um contrato comum para geração de relatórios.
+
+### Implementações
+
+* Aluno
+* Personal
+
+### Exemplo
+
+```java
+GeradorDeRelatorio gerador = personal;
+
+gerador.gerarRelatorio();
+```
+
+O método executado dependerá do objeto concreto associado à interface.
+
+---
+
+# Tratamento de Exceções
+
+O sistema implementa exceções personalizadas para representar regras de negócio.
+
+## Classe de Exceção
+
+```java
+AcessoNegadoException
+```
+
+### Regra de Negócio
+
+Quando um aluno tenta acessar a academia com plano inativo:
+
+```java
+throw new AcessoNegadoException(
+    "Acesso negado: Plano inativo."
+);
+```
+
+### Captura da Exceção
+
+```java
+try {
+    recepcionista.verificarAcesso(aluno);
+}
+catch (AcessoNegadoException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+### Benefícios
+
+* Evita encerramento inesperado do sistema.
+* Mantém o menu funcionando.
+* Isola regras de negócio da interface.
+
+---
+
+# Funcionalidades
+
+O menu principal disponibiliza:
+
+### 👤 Gestão de Alunos
+
+* Cadastrar aluno
+* Ativar plano
+* Cancelar plano
+
+### 🏋️ Gestão de Personais
+
+* Cadastrar personal trainer
+
+### 📋 Treinamentos
+
+* Criar ficha de treino
+* Associar aluno ao personal
+
+### 🚪 Controle de Acesso
+
+* Verificar acesso do aluno
+* Bloquear alunos com plano inativo
+
+### 📊 Relatórios
+
+* Gerar relatório de aluno
+* Gerar relatório de personal
+
+### 🔚 Sistema
+
+* Encerrar aplicação
+
+---
+
+# 🚀 Como Executar
+
+## Pré-requisitos
+
+* JDK 11 ou superior
+* Terminal ou IDE Java
+
+---
+
+## Clonar o Repositório
+
+```bash
+git clone https://github.com/leozorzii/poo-java/src/academia.git
+```
+
+---
+
+## Compilar
+
+```bash
+javac src/app/Main.java -d bin
+```
+
+---
+
+## Executar
+
+```bash
+java -cp bin app.Main
+```
+
+---
+
+# ⚙️ Tecnologias Utilizadas
+
+* Java 11+
+* Programação Orientada a Objetos
+* Collections Framework
+* Tratamento de Exceções
+* Interface de Console (CLI)
+
+---
+
+# 📚 Conceitos Demonstrados
+
+✅ Abstração
+
+✅ Herança
+
+✅ Encapsulamento
+
+✅ Polimorfismo
+
+✅ Interfaces
+
+✅ Sobrecarga
+
+✅ Sobrescrita
+
+✅ Exceções Personalizadas
+
+✅ Organização em Camadas
+
+✅ Relacionamentos entre Objetos
+
+---
+
+# 🎓 Autor
+
+**Leonardo Montagner de Zorzi**
+
+Desenvolvedor Full Stack
+Bacharel em Sistemas de Informação – UFN
+
+GitHub: **@Leozorzii**
